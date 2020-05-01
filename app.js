@@ -1,7 +1,7 @@
 // app.js
 const express = require('express')
 const exphbs = require('express-handlebars')
-
+const db = require('./models')  // 引入資料庫
 const app = express()
 const port = 3000
 
