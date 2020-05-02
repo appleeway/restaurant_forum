@@ -37,7 +37,7 @@ app.use((req, res, next) => {
 })
 
 app.listen(port, () => {
-  db.sequelize.sync() // 跟資料庫同步
+  // db.sequelize.sync() // 跟資料庫同步
   console.log(`This app is listening on port ${port}`)
 })
 
