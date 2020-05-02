@@ -1,6 +1,7 @@
 // routes/index.js
 const restController = require('../controllers/restController')
 const adminController = require('../controllers/adminController')
+const userController = require('../controllers/userController')
 
 module.exports = app => {
   app.get('/', (req, res) => res.redirect('/restaurants'))
@@ -8,7 +9,9 @@ module.exports = app => {
 
   // 連到 /admin 頁面就轉到 /admin/restaurants
   app.get('/admin', (req, res) => res.redirect('/admin/restaurants'))
-
   // 在 /admin/restaurants 底下則交給 adminController.getRestaurants 處理
   app.get('/admin/restaurants', adminController.getRestaurants)
+
+  app.get('/signup', userController.signUpPage)
+  app.post('/signup', userController.signUp)
 }
