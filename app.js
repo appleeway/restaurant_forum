@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const flash = require('connect-flash')
 const session = require('express-session')
 const passport = require('./config/passport')
+const methodOverride = require('method-override')
 const db = require('./models')  // 引入資料庫
 const app = express()
 const port = 3000
@@ -15,6 +16,9 @@ app.set('view engine', 'handlebars')
 
 // set body-parser
 app.use(bodyParser.urlencoded({ extended: true }))
+
+// set method-override
+app.use(methodOverride('_method'))
 
 // set session connect-flash
 app.use(session({ secret: 'hotcat', resave: false, saveUninitialized: false }))
