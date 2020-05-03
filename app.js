@@ -9,7 +9,7 @@ const methodOverride = require('method-override')
 const db = require('./models')  // 引入資料庫
 const app = express()
 const port = process.env.PORT || 3000
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
+
 
 app.use('/upload', express.static(__dirname + '/upload'))
 
