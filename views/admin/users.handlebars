@@ -1,0 +1,39 @@
+<h1>餐廳後台</h1>
+
+<div class="row ml-1">
+<a href="/admin/restaurants">Restautant</a>
+<p class="ml-1"> | </p>
+<a class="ml-1" href="/admin/users">Users</a>
+</div>
+
+
+<br />
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Email</th>
+      <th scope="col">Role</th>
+      <th scope="col">#</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each users}}
+    <tr>
+      <th scope="row">{{this.id}}</th>
+      <td>{{this.name}}</td>
+      <td>{{#if this.isAdmin}}admin{{else}}user{{/if}}</td>
+      <td>
+        <form action="/admin/users/{{this.id}}?_method=PUT" method="POST" style="display: inline;">
+          {{#if this.isAdmin}}
+          <button type="submit" class="btn btn-link">set as user</button>
+          {{else}}
+          <button type="submit" class="btn btn-link">set as admin</button>
+          {{/if}}
+        </form>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
