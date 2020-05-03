@@ -1,7 +1,7 @@
 // controllers/adminController.js
 const fs = require('fs')
 const imgur = require('imgur-node-api')
-const IMGUR_CLIENT_ID = 'a6c50c57c50990c'
+const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const db = require('../models')
 const Restaurant = db.Restaurant
 

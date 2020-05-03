@@ -9,7 +9,9 @@ const methodOverride = require('method-override')
 const db = require('./models')  // 引入資料庫
 const app = express()
 const port = process.env.PORT || 3000
-
+if (process.env.NODE.ENV !== 'production'){
+  require('dotenv').config()
+}
 
 app.use('/upload', express.static(__dirname + '/upload'))
 
