@@ -10,6 +10,8 @@ const db = require('./models')  // 引入資料庫
 const app = express()
 const port = 3000
 
+app.use('/upload', express.static(__dirname + '/upload'))
+
 // set view engine
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
