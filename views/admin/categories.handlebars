@@ -7,7 +7,7 @@
 </div>
 
 {{#if category}}
-<form action="/admin/categories/{{restaurant.id}}?_method=PUT" method="POST" class="form-inline">
+<form action="/admin/categories/{{category.id}}?_method=PUT" method="POST" class="form-inline">
   {{else}}
   <form action="/admin/categories" method="POST" class="form-inline">
     {{/if}}
