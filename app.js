@@ -16,7 +16,10 @@ if (process.env.NODE.ENV !== 'production'){
 app.use('/upload', express.static(__dirname + '/upload'))
 
 // set view engine
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
+app.engine('handlebars', exphbs({ 
+  defaultLayout: 'main',
+  helpers: require('./config/handlebars-helpers')
+   }))
 app.set('view engine', 'handlebars')
 
 // set body-parser
