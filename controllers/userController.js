@@ -51,9 +51,24 @@ const userController = {
   getUser: (req, res) => {
     return User.findByPk(req.params.id)
       .then(user => {
-        res.render('profile', { user: user.toJSON() })
+        if (req.user.id === Number(req.params.id)) {
+          res.render('profile', { user: user.toJSON(), isOwner: 'true' })
+        } else {
+          res.render('profile', { user: user.toJSON() })
+        }
       })
-  }
+  },
+
+  editUser: (req, res) => {
+    if (req.user.id === Number(req.params.id)) {
+      return User.findByPk(req.user.id)
+        .then(user => {
+          res.render('edit', { user: user.toJSON() })
+        })
+    } else {
+      res.redirect('back')
+    }
+  },
 }
 
 module.exports = userController

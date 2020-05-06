@@ -11,7 +11,9 @@
           <p>
             {{user.email}}
           </p>
-          <a href="#" class="btn btn-outline-info mb-3">編輯資料</a>
+          {{#if isOwner}}
+          <a href="/users/{{user.id}}/edit" class="btn btn-outline-info mb-3">編輯資料</a>
+          {{/if}}
         </div>
       </div>
     </div>
