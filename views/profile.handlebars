@@ -2,25 +2,18 @@
   <div class="row">
     <div class="col-md-5">
 
-      <img class="card-img-top" src="{{#if otherUser}}{{otherUser.image}}{{else}}{{user.image}}{{/if}}"
-        alt="Card image cap">
+      <img class="card-img-top" src="{{theUser.image}}" alt="Card image cap">
     </div>
     <div class="col-md-5">
       <div class="container">
         <div class="row text-md-dark">
           <div class="col-md-7">
-            {{#if otherUser}}
-            <h3>{{otherUser.name}}</h3>
+            <h3>{{theUser.name}}</h3>
             <p>
-              {{otherUser.email}}
+              {{theUser.email}}
             </p>
-            {{else}}
-            <h3>{{user.name}}</h3>
-            <p>
-              {{user.email}}
-            </p>
-            {{/if}}
 
+            <p>{{commentNumber}} 已評論餐廳</p>
             {{#if isOwner}}
             <a href="/users/{{user.id}}/edit" class="btn btn-outline-info mb-3">編輯資料</a>
             {{/if}}
@@ -29,5 +22,20 @@
       </div>
     </div>
 
+  </div>
+</section>
+
+<section>
+  <div class="card">
+    <div class="card-header">
+      <p>{{commentNumber}} 已評論餐廳</p>
+    </div>
+    <div class="card-body">
+      {{#each theUser.Comments}}
+      <a href="/restaurants/{{this.Restaurant.id}}" target="_blank">
+        <img src="{{this.Restaurant.image}}" alt="Restaurant image" width="10%" height="10%" />
+      </a>
+      {{/each}}
+    </div>
   </div>
 </section>

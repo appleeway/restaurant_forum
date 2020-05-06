@@ -4,6 +4,8 @@ const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
+const Comment = db.Comment
+const Restaurant = db.Restaurant
 
 const userController = {
   signUpPage: (req, res) => {
@@ -51,27 +53,20 @@ const userController = {
   },
 
   getUser: (req, res) => {
-    if (req.user.id === Number(req.params.id)) {
-      return User.findByPk(req.user.id)
-        .then((user) => {
-          res.render('profile', { user: user.toJSON(), isOwner: 'true' })
-        })
-    } else {
-      User.findByPk(req.user.id).then(user => {
-        User.findByPk(req.params.id)
-          .then((otherUser) => {   //為了使 main.handlebars 裡的 navbar 維持在原user，改了這個更動但覺得會有更好的寫法
-            res.render('profile', { user: user.toJSON(), otherUser: otherUser.toJSON() })
-          })
+    let commentNumber = ''
+    let isOwner = req.user.id === Number(req.params.id) ? 'true' : ''
+    return User.findByPk(req.params.id, {
+      include: [{ model: Comment, include: [Restaurant] }]
+    })
+      .then((theUser) => {
+        commentNumber = theUser.Comments.length
+        res.render('profile', { theUser: theUser.toJSON(), isOwner: isOwner, commentNumber: commentNumber })
       })
-    }
   },
 
   editUser: (req, res) => {
     if (req.user.id === Number(req.params.id)) {
-      return User.findByPk(req.user.id)
-        .then(user => {
-          res.render('edit', { user: user.toJSON() })
-        })
+      res.render('edit')
     } else {
       res.redirect('back')
     }
