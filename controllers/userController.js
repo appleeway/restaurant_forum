@@ -51,14 +51,19 @@ const userController = {
   },
 
   getUser: (req, res) => {
-    return User.findByPk(req.params.id)
-      .then(user => {
-        if (req.user.id === Number(req.params.id)) {
+    if (req.user.id === Number(req.params.id)) {
+      return User.findByPk(req.user.id)
+        .then((user) => {
           res.render('profile', { user: user.toJSON(), isOwner: 'true' })
-        } else {
-          res.render('profile', { user: user.toJSON() })
-        }
+        })
+    } else {
+      User.findByPk(req.user.id).then(user => {
+        User.findByPk(req.params.id)
+          .then((otherUser) => {
+            res.render('profile', { user: user.toJSON(), otherUser: otherUser.toJSON() })
+          })
       })
+    }
   },
 
   editUser: (req, res) => {
