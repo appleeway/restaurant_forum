@@ -30,6 +30,7 @@ module.exports = (app, passport) => {
   app.post('/comments', authenticated, commentController.postComment)
   app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
 
+  app.get('/users/:id', authenticated, userController.getUser)
 
   // 連到 /admin 頁面就轉到 /admin/restaurants
   app.get('/admin', (req, res) => res.redirect('/admin/restaurants'))
