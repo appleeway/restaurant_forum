@@ -59,7 +59,7 @@ const userController = {
     } else {
       User.findByPk(req.user.id).then(user => {
         User.findByPk(req.params.id)
-          .then((otherUser) => {
+          .then((otherUser) => {   //為了使 main.handlebars 裡的 navbar 維持在原user，改了這個更動但覺得會有更好的寫法
             res.render('profile', { user: user.toJSON(), otherUser: otherUser.toJSON() })
           })
       })
