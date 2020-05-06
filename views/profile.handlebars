@@ -1,21 +1,23 @@
 <section class="container-fluid py-5 bg-light text-white" style="position: relative">
   <div class="row">
-    <div class="col-md-5 bg-cover" style="
-      position: absolute;top:0;bottom:0;
-      background-image: url({{user.image}}))">
+    <div class="col-md-5">
+      <img class="card-img-top" src="{{user.image}}" alt="Card image cap">
     </div>
-    <div class="container">
-      <div class="row justify-content-end text-md-dark">
-        <div class="col-md-7">
-          <h3>{{user.name}}</h3>
-          <p>
-            {{user.email}}
-          </p>
-          {{#if isOwner}}
-          <a href="/users/{{user.id}}/edit" class="btn btn-outline-info mb-3">編輯資料</a>
-          {{/if}}
+    <div class="col-md-5">
+      <div class="container">
+        <div class="row text-md-dark">
+          <div class="col-md-7">
+            <h3>{{user.name}}</h3>
+            <p>
+              {{user.email}}
+            </p>
+            {{#if isOwner}}
+            <a href="/users/{{user.id}}/edit" class="btn btn-outline-info mb-3">編輯資料</a>
+            {{/if}}
+          </div>
         </div>
       </div>
     </div>
+
   </div>
 </section>

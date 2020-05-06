@@ -1,4 +1,6 @@
 // controllers/userControllers.js
+const imgur = require('imgur-node-api')
+const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
@@ -69,6 +71,42 @@ const userController = {
       res.redirect('back')
     }
   },
+
+  putUser: (req, res) => {
+    if (!req.body.name) {
+      req.flash('error_messages', "name didn't exist")
+      return res.redirect('back')
+    }
+    const { file } = req
+    if (file) {
+      imgur.setClientID(IMGUR_CLIENT_ID)
+      imgur.upload(file.path, (err, img) => {
+        return User.findByPk(req.user.id)
+          .then((user) => {
+            user.update({
+              ...user,
+              name: req.body.name,
+              image: file ? img.data.link : user.image
+            }).then((user) => {
+              req.flash('success_messages', 'User data was successfully updated')
+              res.redirect('back')
+            })
+          })
+      })
+    } else {
+      return User.findByPk(req.user.id)
+        .then((user) => {
+          user.update({
+            ...user,
+            name: req.body.name,
+            image: user.image
+          }).then(user => {
+            req.flash('success_messages', 'User was successfully updated')
+            res.redirect('back')
+          })
+        })
+    }
+  }
 }
 
 module.exports = userController
