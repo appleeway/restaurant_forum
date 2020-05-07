@@ -64,7 +64,12 @@ const userController = {
           where: { UserId: req.params.id },
           order: [['createdAt', 'DESC']]
         }).then(comment => {
-          res.render('profile', { theUser: theUser.toJSON(), isOwner: isOwner, commentNumber: commentNumber, comment: comment.toJSON() })
+          res.render('profile', {
+            theUser: theUser.toJSON(),
+            isOwner: isOwner,
+            commentNumber: commentNumber,
+            comment: comment.toJSON()
+          })
         })
       })
   },
