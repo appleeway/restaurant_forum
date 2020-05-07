@@ -60,7 +60,12 @@ const userController = {
     })
       .then((theUser) => {
         commentNumber = theUser.Comments.length
-        res.render('profile', { theUser: theUser.toJSON(), isOwner: isOwner, commentNumber: commentNumber })
+        Comment.findOne({
+          where: { UserId: req.params.id },
+          order: [['createdAt', 'DESC']]
+        }).then(comment => {
+          res.render('profile', { theUser: theUser.toJSON(), isOwner: isOwner, commentNumber: commentNumber, comment: comment.toJSON() })
+        })
       })
   },
 
