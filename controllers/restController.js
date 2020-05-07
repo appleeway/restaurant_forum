@@ -74,6 +74,14 @@ let restController = {
         return res.render('feeds', { restaurant: restaurant, comments: comments })
       })
     })
+  },
+  getDashboard: (req, res) => {
+    Restaurant.findOne({
+      where: { id: req.params.id },
+      include: [Category, { model: Comment }]
+    }).then(restaurant => {
+      return res.render('dashboard', { restaurant: restaurant.toJSON(), commentNumber: restaurant.Comments.length })
+    })
   }
 }
 
