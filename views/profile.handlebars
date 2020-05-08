@@ -19,7 +19,16 @@
             <p>{{followerNumber}} followers（追隨者）</p>
             {{#if isOwner}}
             <a href="/users/{{user.id}}/edit" class="btn btn-outline-info mb-3">編輯資料</a>
+            {{else}}
+            {{#if this.isFollowed }}
+            <form action="/following/{{theUser.id}}?_method=DELETE" method="POST" style="display: contents;"><button
+                type="submit" class="btn btn-danger">取消追蹤</button></form>
+            {{else}}
+            <form action="/following/{{theUser.id}}" method="POST" style="display: contents;"><button type="submit"
+                class="btn btn-primary">追蹤</button></form>
             {{/if}}
+            {{/if}}
+
           </div>
         </div>
       </div>

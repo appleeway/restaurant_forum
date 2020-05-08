@@ -86,6 +86,8 @@ const userController = {
         favoritedRestNumber = theUser.FavoritedRestaurants.length
         followerNumber = theUser.Followers.length
         followingNumber = theUser.Followings.length
+        isFollowed = req.user.Followings.map(d => d.id).includes(theUser.id)
+        //=====需要想辦法重構，太多太亂不好維護======
         Comment.findOne({
           where: { UserId: req.params.id },
           order: [['createdAt', 'DESC']]
@@ -95,6 +97,7 @@ const userController = {
               theUser: theUser.toJSON(),
               reviewedRestaurants: reviewedRestaurants,
               isOwner: isOwner,
+              isFollowed: isFollowed,
               commentNumber: commentNumber,
               favoritedRestNumber: favoritedRestNumber,
               followerNumber: followerNumber,
