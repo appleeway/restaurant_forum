@@ -26,19 +26,68 @@
 </section>
 
 <section>
-  <div class="card">
-    <div class="card-header">
-      <p>{{commentNumber}} 已評論餐廳</p>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <p>{{followingNumber}} followerings（追蹤者）</p>
+        </div>
+        <div class="card-body">
+          {{#each theUser.Followings}}
+          <a href="/users/{{this.id}}" target="_blank">
+            <img src="{{this.image}}" alt="User image" width="100px" height="100px" />
+          </a>
+          {{/each}}
+        </div>
+      </div>
     </div>
-    <div class="card-body">
-      {{#each theUser.Comments}}
-      <a href="/restaurants/{{this.Restaurant.id}}" target="_blank">
-        <img src="{{this.Restaurant.image}}" alt="Restaurant image" width="10%" height="10%" />
-      </a>
-      {{/each}}
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <p>{{commentNumber}} 已評論餐廳</p>
+        </div>
+        <div class="card-body">
+          {{#each reviewedRestaurants}}
+          <a href="/restaurants/{{this.id}}" target="_blank">
+            <img src="{{this.image}}" alt="restaurant image" width="100px" height="100px" />
+          </a>
+          {{/each}}
+        </div>
+        {{#if comment}}
+        <div class="card-footer text-muted">
+          最近一次評論 {{moment comment.createdAt}}
+        </div>
+        {{/if}}
+      </div>
     </div>
-    <div class="card-footer text-muted">
-      最近一次評論 {{moment comment.createdAt}}
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <p>{{followerNumber}} followers（追蹤者）</p>
+        </div>
+        <div class="card-body">
+          {{#each theUser.Followers}}
+          <a href="/users/{{this.id}}" target="_blank">
+            <img src="{{this.image}}" alt="User image" width="100px" height="100px" />
+          </a>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <p>{{favoritedRestNumber}} 已收藏餐廳</p>
+        </div>
+        <div class="card-body">
+          {{#each theUser.FavoritedRestaurants}}
+          <a href="/restaurants/{{this.id}}" target="_blank">
+            <img src="{{this.image}}" alt="restaurant image" width="100px" height="100px" />
+          </a>
+          {{/each}}
+        </div>
+      </div>
     </div>
   </div>
 </section>

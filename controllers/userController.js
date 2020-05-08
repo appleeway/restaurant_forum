@@ -56,23 +56,63 @@ const userController = {
   },
 
   getUser: (req, res) => {
-    let commentNumber = ''
+    let commentNumber, favoritedRestNumber, followerNumber, followingNumber = ''
     let isOwner = req.user.id === Number(req.params.id) ? 'true' : ''
     return User.findByPk(req.params.id, {
-      include: [{ model: Comment, include: [Restaurant] }]
+      include: [
+        { model: Comment, include: [Restaurant] },
+        { model: Restaurant, as: 'FavoritedRestaurants' },
+        { model: User, as: 'Followers' },
+        { model: User, as: 'Followings' }
+      ]
     })
       .then((theUser) => {
-        commentNumber = theUser.Comments.length
+        //---------------------排除重複評論的餐廳----------------
+        function dedup(arr) {
+          let hashTable = {}
+          return arr.filter((el) => {
+            let key = JSON.stringify(el)
+            let match = Boolean(hashTable[key])
+            return (match ? false : hashTable[key] = true)
+          })
+        }
+        restaurantIdArray = theUser.Comments.map(item => ({
+          id: item.dataValues.Restaurant.dataValues.id,
+          image: item.dataValues.Restaurant.dataValues.image
+        }))
+        reviewedRestaurants = dedup(restaurantIdArray)
+        //-----------------------------------------------------
+        commentNumber = reviewedRestaurants.length
+        favoritedRestNumber = theUser.FavoritedRestaurants.length
+        followerNumber = theUser.Followers.length
+        followingNumber = theUser.Followings.length
         Comment.findOne({
           where: { UserId: req.params.id },
           order: [['createdAt', 'DESC']]
         }).then(comment => {
-          res.render('profile', {
-            theUser: theUser.toJSON(),
-            isOwner: isOwner,
-            commentNumber: commentNumber,
-            comment: comment.toJSON()
-          })
+          if (!comment) {
+            res.render('profile', {
+              theUser: theUser.toJSON(),
+              reviewedRestaurants: reviewedRestaurants,
+              isOwner: isOwner,
+              commentNumber: commentNumber,
+              favoritedRestNumber: favoritedRestNumber,
+              followerNumber: followerNumber,
+              followingNumber: followingNumber
+            })
+          } else {
+            res.render('profile', {
+              theUser: theUser.toJSON(),
+              reviewedRestaurants: reviewedRestaurants,
+              isOwner: isOwner,
+              comment: comment.toJSON(),
+              commentNumber: commentNumber,
+              favoritedRestNumber: favoritedRestNumber,
+              followerNumber: followerNumber,
+              followingNumber: followingNumber
+            })
+          }
+
         })
       })
   },
