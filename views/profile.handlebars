@@ -14,6 +14,9 @@
             </p>
 
             <p>{{commentNumber}} 已評論餐廳</p>
+            <p>{{favoritedRestNumber}} 已收藏餐廳</p>
+            <p>{{followingNumber}} followerings（追蹤者）</p>
+            <p>{{followerNumber}} followers（追隨者）</p>
             {{#if isOwner}}
             <a href="/users/{{user.id}}/edit" class="btn btn-outline-info mb-3">編輯資料</a>
             {{/if}}
@@ -64,7 +67,7 @@
     <div class="col-md-4">
       <div class="card">
         <div class="card-header">
-          <p>{{followerNumber}} followers（追蹤者）</p>
+          <p>{{followerNumber}} followers（追隨者）</p>
         </div>
         <div class="card-body">
           {{#each theUser.Followers}}
