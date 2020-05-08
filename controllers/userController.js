@@ -108,6 +108,7 @@ const userController = {
               theUser: theUser.toJSON(),
               reviewedRestaurants: reviewedRestaurants,
               isOwner: isOwner,
+              isFollowed: isFollowed,
               comment: comment.toJSON(),
               commentNumber: commentNumber,
               favoritedRestNumber: favoritedRestNumber,
