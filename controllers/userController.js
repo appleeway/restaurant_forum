@@ -57,7 +57,7 @@ const userController = {
 
   getUser: (req, res) => {
     let commentNumber, favoritedRestNumber, followerNumber, followingNumber = ''
-    let isOwner = req.user.id === Number(req.params.id) ? 'true' : ''
+    let isOwner = req.user.id === Number(req.params.id)
     return User.findByPk(req.params.id, {
       include: [
         { model: Comment, include: [Restaurant] },
