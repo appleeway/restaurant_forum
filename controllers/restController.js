@@ -91,9 +91,17 @@ let restController = {
   getDashboard: (req, res) => {
     Restaurant.findOne({
       where: { id: req.params.id },
-      include: [Category, { model: Comment }]
+      include: [
+        Category,
+        { model: Comment },
+        { model: User, as: "FavoritedUsers" }
+      ]
     }).then(restaurant => {
-      return res.render('dashboard', { restaurant: restaurant.toJSON(), commentNumber: restaurant.Comments.length })
+      return res.render('dashboard', {
+        restaurant: restaurant.toJSON(),
+        commentNumber: restaurant.Comments.length,
+        favoritedNumber: restaurant.FavoritedUsers.length
+      })
     })
   },
   getTopTen: (req, res) => {
