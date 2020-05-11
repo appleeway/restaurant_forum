@@ -86,37 +86,23 @@ const userController = {
         favoritedRestNumber = theUser.FavoritedRestaurants.length
         followerNumber = theUser.Followers.length
         followingNumber = theUser.Followings.length
-        isFollowed = req.user.Followings.map(d => d.id).includes(theUser.id)
+        isFollowed = req.user.Followings.some(d => d.id === theUser.id)
         //=====需要想辦法重構，太多太亂不好維護======
         Comment.findOne({
           where: { UserId: req.params.id },
           order: [['createdAt', 'DESC']]
         }).then(comment => {
-          if (!comment) {
-            res.render('profile', {
-              theUser: theUser.toJSON(),
-              reviewedRestaurants: reviewedRestaurants,
-              isOwner: isOwner,
-              isFollowed: isFollowed,
-              commentNumber: commentNumber,
-              favoritedRestNumber: favoritedRestNumber,
-              followerNumber: followerNumber,
-              followingNumber: followingNumber
-            })
-          } else {
-            res.render('profile', {
-              theUser: theUser.toJSON(),
-              reviewedRestaurants: reviewedRestaurants,
-              isOwner: isOwner,
-              isFollowed: isFollowed,
-              comment: comment.toJSON(),
-              commentNumber: commentNumber,
-              favoritedRestNumber: favoritedRestNumber,
-              followerNumber: followerNumber,
-              followingNumber: followingNumber
-            })
-          }
-
+          res.render('profile', {
+            theUser: theUser.toJSON(),
+            comment: comment && comment.toJSON(),
+            reviewedRestaurants,
+            isOwner,
+            isFollowed,
+            commentNumber,
+            favoritedRestNumber,
+            followerNumber,
+            followingNumber
+          })
         })
       })
   },
@@ -200,12 +186,9 @@ const userController = {
         UserId: req.user.id,
         RestaurantId: req.params.restaurantId
       }
-    }).then(like => {
-      like.destroy()
-        .then(done => {
-          return res.redirect('back')
-        })
     })
+      .then(like => { like.destroy() })
+      .then(done => { return res.redirect('back') })
   },
   getTopUser: (req, res) => {
     // 撈出所有 User 與 followers 的資料
@@ -217,10 +200,10 @@ const userController = {
       users = users.map(user => ({
         ...user.dataValues,
         FollowerCount: user.Followers.length,
-        isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+        isFollowed: req.user.Followings.some(d => d.id === user.id)
       }))
       users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
-      return res.render('topUser', { users: users })
+      return res.render('topUser', { users })
     })
   },
   addFollowing: (req, res) => {

@@ -29,8 +29,8 @@ let restController = {
       const data = result.rows.map(r => ({
         ...r.dataValues,
         description: r.dataValues.description.substring(0, 50),
-        isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id),
-        isLiked: req.user.LikedRestaurants.map(d => d.id).includes(r.id),
+        isFavorited: req.user.FavoritedRestaurants.some(d => d.id === r.id),
+        isLiked: req.user.LikedRestaurants.some(d => d.id === r.id),
         categoryName: r.Category.name
       }))
       Category.findAll({
@@ -39,12 +39,12 @@ let restController = {
       }).then(categories => {
         return res.render('restaurants', {
           restaurants: data,
-          categories: categories,
-          categoryId: categoryId,
-          page: page,
-          totalPage: totalPage,
-          prev: prev,
-          next: next
+          categories,
+          categoryId,
+          page,
+          totalPage,
+          prev,
+          next
         })
       })
     })
@@ -58,13 +58,13 @@ let restController = {
         { model: Comment, include: [User] }
       ]
     }).then(restaurant => {
-      const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
-      const isLiked = restaurant.LikedUsers.map(d => d.id).includes(req.user.id)
+      const isFavorited = restaurant.FavoritedUsers.some(d => d.id === req.user.id)
+      const isLiked = restaurant.LikedUsers.map(d => d.id === req.user.id)
       restaurant.increment('viewCounts', { by: 1 }).then(done => {
         return res.render('restaurant', {
           restaurant: restaurant.toJSON(),
-          isFavorited: isFavorited,
-          isLiked: isLiked
+          isFavorited,
+          isLiked
         })
       })
     })
@@ -84,7 +84,7 @@ let restController = {
         order: [['createdAt', 'DESC']],
         include: [User, Restaurant]
       }).then(comments => {
-        return res.render('feeds', { restaurant: restaurant, comments: comments })
+        return res.render('feeds', { restaurant, comments })
       })
     })
   },
@@ -114,10 +114,11 @@ let restController = {
         ...restaurant.dataValues,
         description: restaurant.description.substring(0, 50),
         FavoritedCount: restaurant.FavoritedUsers.length,
-        isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(restaurant.id)
+        //isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(restaurant.id),
+        isFavorited: req.user.FavoritedRestaurants.some((d => d.id === restaurant.id))
       }))
       restaurants = restaurants.sort((a, b) => b.FavoritedCount - a.FavoritedCount).slice(0, 10)
-      return res.render('topTenRestaurant', { restaurants: restaurants })
+      return res.render('topTenRestaurant', { restaurants })
     })
   }
 
