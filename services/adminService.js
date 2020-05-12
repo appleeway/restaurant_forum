@@ -4,6 +4,7 @@ const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const db = require('../models')
 const Restaurant = db.Restaurant
 const Category = db.Category
+const User = db.User
 
 const adminService = {
   getRestaurants: (req, res, cb) => {
@@ -11,9 +12,21 @@ const adminService = {
       cb({ restaurants: restaurants })
     })
   },
+  createRestaurant: (req, res, cb) => {
+    Category.findAll().then(categories => {
+      return cb({ categories: categories })
+    })
+  },
   getRestaurant: (req, res, cb) => {
     return Restaurant.findByPk(req.params.id, { include: [Category] }).then(restaurant => {
       cb({ restaurant: restaurant })
+    })
+  },
+  editRestaurant: (req, res, cb) => {
+    Category.findAll().then(categories => {
+      return Restaurant.findByPk(req.params.id).then(restaurant => {
+        cb({ categories: categories, restaurant: restaurant })
+      })
     })
   },
   deleteRestaurant: (req, res, cb) => {
@@ -102,5 +115,23 @@ const adminService = {
         })
     }
   },
+
+  // User admin controller
+  getUsers: (req, res, cb) => {
+    return User.findAll().then(users => {
+      cb({ users: users })
+    })
+  },
+  putUsers: (req, res, cb) => {
+    return User.findByPk(req.params.id)
+      .then((user) => {
+        user.update({
+          isAdmin: user.isAdmin ? 0 : 1
+        }).then((user) => {
+          cb({ status: 'success', message: 'user auth was successfully update' })
+        })
+      })
+  }
 }
+
 module.exports = adminService

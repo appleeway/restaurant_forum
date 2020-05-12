@@ -7,8 +7,18 @@ const adminController = {
       return res.json(data)
     })
   },
+  createRestaurant: (req, res) => {
+    adminService.createRestaurant(req, res, (data) => {
+      return res.json(data)
+    })
+  },
   getRestaurant: (req, res) => {
     adminService.getRestaurant(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+  editRestaurant: (req, res) => {
+    adminService.editRestaurant(req, res, (data) => {
       return res.json(data)
     })
   },
@@ -24,6 +34,16 @@ const adminController = {
   },
   putRestaurant: (req, res) => {
     adminService.putRestaurant(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+  getUsers: (req, res) => {
+    adminService.getUsers(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+  putUsers: (req, res) => {
+    adminService.putUsers(req, res, (data) => {
       return res.json(data)
     })
   }
