@@ -9,6 +9,7 @@ const adminController = require('../controllers/api/adminController')
 const categoryController = require('../controllers/api/categoryController')
 const userController = require('../controllers/api/userController')
 const commentController = require('../controllers/api/commentController')
+const restController = require('../controllers/api/restController')
 
 const authenticated = passport.authenticate('jwt', { session: false })
 
@@ -20,6 +21,12 @@ const authenticatedAdmin = (req, res, next) => {
     return res.json({ status: 'error', message: 'permission denied' })
   }
 }
+// restaurants
+router.get('/restaurants', authenticated, restController.getRestaurants)
+router.get('/restaurants/top', authenticated, restController.getTopTen)
+router.get('/restaurants/feeds', authenticated, restController.getFeeds)
+router.get('/restaurants/:id', authenticated, restController.getRestaurant)
+router.get('/restaurants/:id/dashboard', authenticated, restController.getDashboard)
 // comments
 router.post('/comments', authenticated, commentController.postComment)
 router.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
