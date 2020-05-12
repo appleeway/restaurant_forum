@@ -26,6 +26,18 @@ const categoryController = {
       })
     }
   },
+  putCategory: (req, res, cb) => {
+    if (!req.body.name) {
+      cb({ status: 'error', message: "name didn't exist" })
+    }
+    return Category.findByPk(req.params.id).then((category) => {
+      category.update({
+        name: req.body.name
+      }).then((category) => {
+        cb({ status: 'success', massage: 'category was successfully update' })
+      })
+    })
+  },
 
 }
 module.exports = categoryController
