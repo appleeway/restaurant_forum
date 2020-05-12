@@ -8,6 +8,7 @@ const upload = multer({ dest: 'temp/' })
 const adminController = require('../controllers/api/adminController')
 const categoryController = require('../controllers/api/categoryController')
 const userController = require('../controllers/api/userController')
+const commentController = require('../controllers/api/commentController')
 
 const authenticated = passport.authenticate('jwt', { session: false })
 
@@ -19,6 +20,9 @@ const authenticatedAdmin = (req, res, next) => {
     return res.json({ status: 'error', message: 'permission denied' })
   }
 }
+// comments
+router.post('/comments', authenticated, commentController.postComment)
+router.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
 // top users
 router.get('/users/top', authenticated, userController.getTopUser)
 //
