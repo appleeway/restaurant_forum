@@ -24,6 +24,7 @@ app.set('view engine', 'handlebars')
 
 // set body-parser
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
 // set method-override
 app.use(methodOverride('_method'))
